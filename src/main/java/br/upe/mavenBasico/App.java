@@ -14,5 +14,11 @@ public class App
         for (String dezena: resultado) {
             System.out.print( dezena + " " );
         }
+
+        List<String> resultadoQuina = ResultadoQuina.pegarResultado();
+
+        for(String quina: resultadoQuina) {
+            System.out.print(quina + " ");
+        }
     }
 }
