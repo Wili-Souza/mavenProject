@@ -20,5 +20,12 @@ public class App
         for(String quina: resultadoQuina) {
             System.out.print(quina + " ");
         }
+
+
+        List<String> resultadoTimemania = ResultadoTimemania.pegarResultadoTimemania();
+
+        for(String timemania: resultadoTimemania){
+            System.out.print(timemania + " ");
+        }
     }
 }
