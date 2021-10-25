@@ -1,10 +1,17 @@
 package br.upe.mavenBasico;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import static io.github.bonigarcia.wdm.DriverManagerType.CHROME;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.*;
 
 /**
 
@@ -16,7 +23,7 @@ public class ResultadoMegasena {
     /**
      * URL que possui as dezenas sorteadas
      */
-    private final static String URL = "http://www1.caixa.gov.br/_newincludes/home_2011/resultado_megasena.asp";
+    private final static String URL = "http://loterias.caixa.gov.br/wps/portal/loterias/landing/megasena/";
 
     /**
      * Marcação inicial para extrair as dezenas do retorno HTML.
@@ -36,49 +43,59 @@ public class ResultadoMegasena {
      * sorteada.
      */
 
-    public static String[] obtemUltimoResultado() {
-        //Criação do cliente HTTP que fará a conexão com o site
-        HttpClient httpclient = new DefaultHttpClient();
+    public static List<String>  obtemUltimoResultado() {
+        // setting driver
+        WebDriverManager.getInstance(CHROME).setup();
+
+        // setting options
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+
+        // creating driver
+        WebDriver driver = new ChromeDriver(options);
 
         try {
-            // Definição da URL a ser utilizada
-            HttpGet httpget = new HttpGet(URL);
-            // Manipulador da resposta da conexão com a URL
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            // Resposta propriamente dita
-            String html = httpclient.execute(httpget, responseHandler);
-            //Retorno das dezenas, após tratamento
-            return obterDezenas(html);
+            // connecting to url and waiting page to load
+            driver.get(URL);
+            new WebDriverWait(driver, 5).until(
+                    webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete")
+            );
+
+            // getting dezenas from page content
+            List<String> dezenas = obterDezenas(driver);
+
+            return dezenas;
         } catch (Exception e) {
             // Caso haja erro, dispara exceção.
-            throw new RuntimeException("Um erro inesperado ocorreu.", e);
+            throw new RuntimeException("Um erro inesperado ocorreu: ", e);
         } finally {
-            //Destruição do cliente para liberação dos recursos do sistema.
-            httpclient.getConnectionManager().shutdown();
+            //Destruição do driver para liberação dos recursos do sistema.
+            driver.quit();
         }
     }
 
     /**
-     * Tratamento da resposta HTML obtida pelo método
+     * Tratamento doconteúdo do driver obtida pelo método
      * obtemUltimoResultado().
      *
-     * @param html resposta HTML obtida
-     * @return array de Strings, onde cada elemento é uma dezena
+     * @param driver WebDriver obtida
+     * @return List de Strings, onde cada elemento é uma dezena
      * sorteada.
      */
 
-    private static String[] obterDezenas(String html) {
-        // Posição inicial de onde começam as dezenas
-        Integer parteInicial =
-                html.indexOf(MARCA_INICIAL_RETORNO_NAO_UTIL) + MARCA_INICIAL_RETORNO_NAO_UTIL.length();
-        // Posição final de onde começam as dezenas
-        Integer parteFinal =
-                html.indexOf(MARCA_FINAL_RETORNO_NAO_UTIL);
-        // Substring montada com base nas posições, com remoção de espaços.
-        String extracao = html.substring(parteInicial, parteFinal)
-                .replaceAll(" ", "");
-        // Criação de array, com base no método split(), separando por hifen.
-        String[] numeros = extracao.split("-");
-        return numeros;
+    private static List<String> obterDezenas(WebDriver driver) {
+        // getting ul tag of dezenas
+        WebElement ulDezenas = driver.findElement(By.id("ulDezenas"));
+
+        // getting list of li elements
+        List<WebElement> liDezenas = ulDezenas.findElements(By.tagName("li"));
+
+        // creating a new array of Strings with the text content of li elements
+        List<String> dezenas = new ArrayList();
+        for (WebElement liDezena: liDezenas) {
+            dezenas.add(liDezena.getAttribute("textContent"));
+        }
+
+        return dezenas;
     }
 }
