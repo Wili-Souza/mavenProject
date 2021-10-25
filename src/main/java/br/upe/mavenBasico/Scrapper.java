@@ -17,8 +17,6 @@ import static io.github.bonigarcia.wdm.DriverManagerType.CHROME;
 
 public class Scrapper {
     private static String URL = "";
-    private final static String MARCA_INICIAL_RETORNO_NAO_UTIL = "<div id='concurso_resultado'>";
-    private final static String MARCA_FINAL_RETORNO_NAO_UTIL = "</div>";
     private QuantidadeDezenas quantidadeDezenas;
 
     public Scrapper(String URL, QuantidadeDezenas quantidadeDezenas) {
@@ -26,11 +24,13 @@ public class Scrapper {
         this.quantidadeDezenas = quantidadeDezenas;
     }
 
-    public  List<String> pegarResultado() {
-        WebDriverManager.getInstance(CHROME).setup();
+    public  List<List<String>> pegarResultado() {
+        WebDriverManager.getInstance(CHROME).version("95").setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
+
+
         WebDriver driver = new ChromeDriver(options);
 
         try {
@@ -39,7 +39,7 @@ public class Scrapper {
                     webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete")
             );
 
-            List<String> resultado = obterResultado(driver);
+            List<List<String>> resultado = obterResultados(driver);
 
             return resultado;
         } catch (Exception e) {
@@ -49,47 +49,34 @@ public class Scrapper {
         }
     }
 
+    private  List<List<String>> obterResultados(WebDriver driver) {
+        List<List<String>> resultado = new ArrayList();
+        WebElement ulResultado;
+        List<WebElement> liResultado;
 
-    private  List<String> obterResultado(WebDriver driver) {
-            try {
-                WebElement ulResultado = driver.findElement(By.id("ulDezenas"));
+        try {
+            ulResultado = driver.findElement(By.id("ulDezenas"));
+        } catch (Exception e) {
+            ulResultado = driver.findElement(By.className("lista-dezenas"));
+        }
 
-                List<WebElement> liResultado = ulResultado.findElements(By.tagName("li"));
-                List<String> resultado = new ArrayList();
+        liResultado = ulResultado.findElements(By.tagName("li"));
 
-                for (WebElement liRes: liResultado) {
-                    resultado.add(liRes.getAttribute("textContent"));
-                }
+        while ( liResultado.size() > 0 ) {
+            List<String> dezenas = resultadoDaLi(liResultado.subList(0, this.quantidadeDezenas.getValor()));
+            resultado.add(dezenas);
+            liResultado = liResultado.subList(this.quantidadeDezenas.getValor(), liResultado.size());
+        }
 
-                return resultado;
-
-            } catch (Exception e) {
-                List<WebElement> ulResultado = driver.findElements(By.className("lista-dezenas"));
-                List<String> listOfUls = new ArrayList();
-
-                for (WebElement ul: ulResultado){
-                    List<WebElement> liResultado = ul.findElements(By.tagName("li"));
-                    List<String> resultado = new ArrayList();
-
-                    int i = 0;
-
-                    for (WebElement liRes: liResultado) {
-                        resultado.add(liRes.getAttribute("textContent"));
-                        i++;
-
-                        if(i == this.quantidadeDezenas.getValor()) {
-                            listOfUls.add((Arrays.stream(listOfUls.toArray()).count() + 1) + " Resultado: " + resultado);
-                            resultado.clear();
-                            i = 0;
-                        }
-                    }
-                }
-
-                return listOfUls;
-            }
-
+        return resultado;
     }
 
-
-
+    private  List<String> resultadoDaLi(List<WebElement> liList) {
+        List<String> resultado = new ArrayList();
+        for (WebElement li: liList) {
+            resultado.add(li.getAttribute("textContent").trim());
+        }
+        return resultado;
+    }
 }
+

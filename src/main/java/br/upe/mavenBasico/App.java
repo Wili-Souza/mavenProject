@@ -12,29 +12,36 @@ public class App
 
     public static void main( String[] args )
     {
-//        List<String> resultado = ResultadoMegasena.obtemUltimoResultado();
-//        for (String dezena: resultado) {
-//            System.out.print( dezena + " " );
-//        }
-//
-//        List<String> resultadoQuina = ResultadoQuina.pegarResultado();
-//        for(String quina: resultadoQuina) {
-//            System.out.print(quina + " ");
-//        }
+        // Mega Sena
+        Scrapper resultadoMegaSena  = new Scrapper(
+                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/megasena/",
+                QuantidadeDezenas.MEGASENA
+        );
+        List<List<String>> resultadoMega = resultadoMegaSena.pegarResultado();
+        mostrarResultados(resultadoMega, "MegaSena");
 
-        // Modo generico
+        // Quina
+        Scrapper resultadoCaixaQuina = new Scrapper(
+                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/quina/",
+                QuantidadeDezenas.QUINA
+        );
+        List<List<String>> resultadoQuina  = resultadoCaixaQuina.pegarResultado();
+        mostrarResultados(resultadoQuina, "Quina");
 
-//        Scrapper resultadoMegaSena  = new Scrapper("http://loterias.caixa.gov.br/wps/portal/loterias/landing/megasena/");
-//        Scrapper resultadoCaixaQuina = new Scrapper("http://loterias.caixa.gov.br/wps/portal/loterias/landing/quina/");
-//
-//        List<String> resultadoMega = resultadoMegaSena.pegarResultado();
-//        List<String> resultadoQuin  = resultadoCaixaQuina.pegarResultado();
-        Scrapper resultadoLotomania = new Scrapper("http://loterias.caixa.gov.br/wps/portal/loterias/landing/lotomania/", QuantidadeDezenas.LOTOMANIA);
 
-        List<String> resultadoLoto =  resultadoLotomania.pegarResultado();
+        // Lotomania
+        Scrapper resultadoLotomania = new Scrapper(
+                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/lotomania/",
+                QuantidadeDezenas.LOTOMANIA
+        );
+        List<List<String>> resultadoLoto =  resultadoLotomania.pegarResultado();
+        mostrarResultados(resultadoLoto, "Lotomania");
+    }
 
-        for(String loto: resultadoLoto) {
-           System.out.println(loto);
-       }
+    private static void mostrarResultados(List<List<String>> resultados, String nomeLoteria) {
+        System.out.print("Resultado " + nomeLoteria + ": \n");
+        for(List<String> dezenas: resultados) {
+            System.out.print(dezenas + "\n");
+        }
     }
 }

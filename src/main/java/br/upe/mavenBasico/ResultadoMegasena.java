@@ -45,7 +45,7 @@ public class ResultadoMegasena {
 
     public static List<String>  obtemUltimoResultado() {
         // setting driver
-        WebDriverManager.getInstance(CHROME).setup();
+        WebDriverManager.getInstance(CHROME).version("95").setup();
 
         // setting options
         ChromeOptions options = new ChromeOptions();
