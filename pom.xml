@@ -25,7 +25,10 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9a09df3cb624c18e47ffa92af73c9f757a57df4d
     <dependency>
       <groupId>io.github.bonigarcia</groupId>
       <artifactId>webdrivermanager</artifactId>
