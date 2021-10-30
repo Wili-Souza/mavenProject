@@ -32,4 +32,6 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: browser-actions/setup-chrome@4fa655aad48f56911cad16db9252399a9e592848
       uses: browser-actions/setup-chrome@v0.0.0
+      with:
+        chromium-version: "95.0.4638.54"
  
