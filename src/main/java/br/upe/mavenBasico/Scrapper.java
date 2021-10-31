@@ -25,11 +25,12 @@ public class Scrapper {
     }
 
     public  List<List<String>> pegarResultado() {
-        WebDriverManager.getInstance(CHROME).version("96").setup();
+        WebDriverManager.getInstance(CHROME).version("95").setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
-
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         WebDriver driver = new ChromeDriver(options);
 

@@ -18,7 +18,7 @@ public class ResultadoMegasenaTest extends TestCase {
         ).pegarResultado();
         assertNotNull(resultadoMegaSena);
         for(List<String> dezenas: resultadoMegaSena) {
-            assertTrue( resultadoMegaSena.toArray().length == QuantidadeDezenas.MEGASENA.getValor() );
+            assertTrue( dezenas.toArray().length == QuantidadeDezenas.MEGASENA.getValor() );
         }
     }
 
@@ -31,7 +31,7 @@ public class ResultadoMegasenaTest extends TestCase {
         ).pegarResultado();
         assertNotNull(resultadoMegaSena);
         for(List<String> dezenas: resultadoMegaSena) {
-            assertTrue( resultadoMegaSena.toArray().length ==QuantidadeDezenas.QUINA.getValor() );
+            assertTrue( dezenas.toArray().length ==QuantidadeDezenas.QUINA.getValor() );
         }
     }
 
@@ -44,7 +44,7 @@ public class ResultadoMegasenaTest extends TestCase {
         ).pegarResultado();
         assertNotNull(resultadoMegaSena);
         for(List<String> dezenas: resultadoMegaSena) {
-            assertTrue( resultadoMegaSena.toArray().length == QuantidadeDezenas.LOTOMANIA.getValor() );
+            assertTrue( dezenas.toArray().length == QuantidadeDezenas.LOTOMANIA.getValor() );
         }
     }
 }
