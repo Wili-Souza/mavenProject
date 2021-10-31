@@ -26,7 +26,7 @@ public class Scrapper {
 
     public  List<List<String>> pegarResultado() {
         // WebDriverManager.getInstance(CHROME).version("94").setup();
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().version("95.0.4638.69").setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
