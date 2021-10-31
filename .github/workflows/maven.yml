@@ -21,6 +21,10 @@ jobs:
           java-version: "8"
           distribution: "adopt"
           cache: maven
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v0.0.0
+        with:
+          chromium-version: "95.0.4638.54"
       - uses: nanasess/setup-chromedriver@master
         with:
           chromedriver-version: '95.0.4638.54'
