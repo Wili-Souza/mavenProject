@@ -1,5 +1,7 @@
 package br.upe.mavenBasico;
 
+import org.openqa.selenium.WebDriver;
+
 import java.util.List;
 
 /**
@@ -8,34 +10,25 @@ import java.util.List;
  */
 public class App 
 {
+    public static void main( String[] args ) {
+        // Criando driver
+        WebDriver driver = new Driver("95").getDriver();
 
+        try {
+            // Pegando resultados
+            pegarResultado(UrlResultado.MEGASENA.getValor(), QuantidadeDezenas.MEGASENA.getValor(), driver, "MegaSena");
+            pegarResultado(UrlResultado.QUINA.getValor(),  QuantidadeDezenas.QUINA.getValor(), driver, "Quina");
+            pegarResultado(UrlResultado.LOTOMANIA.getValor(), QuantidadeDezenas.LOTOMANIA.getValor(), driver, "Lotomania");
+        } finally {
+            driver.quit();
+        }
+    }
 
-    public static void main( String[] args )
-    {
+    private static void pegarResultado(String URL, int quantidadeDezenas, WebDriver driver, String name) {
         // Mega Sena
-        Scrapper resultadoMegaSena  = new Scrapper(
-                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/megasena/",
-                QuantidadeDezenas.MEGASENA
-        );
-        List<List<String>> resultadoMega = resultadoMegaSena.pegarResultado();
-        mostrarResultados(resultadoMega, "MegaSena");
-
-        // Quina
-        Scrapper resultadoCaixaQuina = new Scrapper(
-                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/quina/",
-                QuantidadeDezenas.QUINA
-        );
-        List<List<String>> resultadoQuina  = resultadoCaixaQuina.pegarResultado();
-        mostrarResultados(resultadoQuina, "Quina");
-
-
-        // Lotomania
-        Scrapper resultadoLotomania = new Scrapper(
-                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/lotomania/",
-                QuantidadeDezenas.LOTOMANIA
-        );
-        List<List<String>> resultadoLoto =  resultadoLotomania.pegarResultado();
-        mostrarResultados(resultadoLoto, "Lotomania");
+        Scrapper scrapperResultado  = new Scrapper(URL, quantidadeDezenas, driver);
+        List<List<String>> resultado = scrapperResultado.pegarResultado();
+        mostrarResultados(resultado, name);
     }
 
     private static void mostrarResultados(List<List<String>> resultados, String nomeLoteria) {
