@@ -9,12 +9,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scrapper {
+public class Scraper {
     private static String URL;
     private int quantidadeDezenas;
     private WebDriver driver;
 
-    public Scrapper(String URL, int quantidadeDezenas, WebDriver driver) {
+    public Scraper(String URL, int quantidadeDezenas, WebDriver driver) {
         this.URL = URL;
         this.quantidadeDezenas = quantidadeDezenas;
         this.driver = driver;

@@ -15,7 +15,7 @@ public class ResultadoMegasenaTest extends TestCase {
     /**  Teste para resultado da MegaSena */
     @Test
     public void testResultadoMegaSena() {
-        List<List<String>> resultadoMegaSena = new Scrapper(
+        List<List<String>> resultadoMegaSena = new Scraper(
                 "http://loterias.caixa.gov.br/wps/portal/loterias/landing/megasena/",
                 QuantidadeDezenas.MEGASENA.getValor(),
                 driver
@@ -29,7 +29,7 @@ public class ResultadoMegasenaTest extends TestCase {
     /**  Teste para resultado da Quina */
     @Test
     public void testResultadoQuina() {
-        List<List<String>> resultadoMegaSena = new Scrapper(
+        List<List<String>> resultadoMegaSena = new Scraper(
                 "http://loterias.caixa.gov.br/wps/portal/loterias/landing/quina/",
                 QuantidadeDezenas.QUINA.getValor(),
                 driver
@@ -40,10 +40,10 @@ public class ResultadoMegasenaTest extends TestCase {
         }
     }
 
-    /**  Teste para resultado da  */
+    /**  Teste para resultado da Lotomania */
     @Test
     public void testResultadoLotomania() {
-        List<List<String>> resultadoMegaSena = new Scrapper(
+        List<List<String>> resultadoMegaSena = new Scraper(
                 "http://loterias.caixa.gov.br/wps/portal/loterias/landing/lotomania/",
                 QuantidadeDezenas.LOTOMANIA.getValor(),
                 driver

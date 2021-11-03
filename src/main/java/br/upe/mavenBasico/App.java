@@ -26,7 +26,7 @@ public class App
 
     private static void pegarResultado(String URL, int quantidadeDezenas, WebDriver driver, String name) {
         // Mega Sena
-        Scrapper scrapperResultado  = new Scrapper(URL, quantidadeDezenas, driver);
+        Scraper scrapperResultado  = new Scraper(URL, quantidadeDezenas, driver);
         List<List<String>> resultado = scrapperResultado.pegarResultado();
         mostrarResultados(resultado, name);
     }
