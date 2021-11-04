@@ -27,7 +27,7 @@ public class Scraper {
                     webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete")
             );
 
-            List<List<String>> resultado = obterResultados();
+            List<List<String>> resultado = formatarResultados();
 
             return resultado;
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class Scraper {
         }
     }
 
-    private  List<List<String>> obterResultados() {
+    private  List<List<String>> formatarResultados() {
         List<List<String>> resultado = new ArrayList();
         WebElement ulResultado;
         List<WebElement> liResultado;
