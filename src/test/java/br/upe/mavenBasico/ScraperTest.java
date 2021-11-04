@@ -2,21 +2,53 @@ package br.upe.mavenBasico;
 
 import junit.framework.TestCase;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import java.util.List;
 
 public class ScraperTest extends TestCase {
+    
+    // Criando driver
+    WebDriver driver = new Driver("95").getDriver();
+
     /**  Teste para resultado da MegaSena */
     @Test
     public void testResultadoMegaSena() {
-        // Criando driver
-        WebDriver driver = new Driver("95").getDriver();
+        List<List<String>> resultadoMegaSena = new Scraper(
+                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/megasena/",
+                QuantidadeDezenas.MEGASENA.getValor(),
+                driver
+        ).pegarResultado();
+        assertNotNull(resultadoMegaSena);
+        for(List<String> dezenas: resultadoMegaSena) {
+            assertTrue( dezenas.toArray().length == QuantidadeDezenas.MEGASENA.getValor() );
+        }
+    }
 
-        // Se foi criado (não nulo)
-        assertNotNull(driver);
+    /**  Teste para resultado da Quina */
+    @Test
+    public void testResultadoQuina() {
+        List<List<String>> resultadoMegaSena = new Scraper(
+                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/quina/",
+                QuantidadeDezenas.QUINA.getValor(),
+                driver
+        ).pegarResultado();
+        assertNotNull(resultadoMegaSena);
+        for(List<String> dezenas: resultadoMegaSena) {
+            assertTrue( dezenas.toArray().length ==QuantidadeDezenas.QUINA.getValor() );
+        }
+    }
 
-        // testando driver
-        driver.get("https://www.google.com");
-        assertNotNull(driver.findElement(By.tagName("html")));
+    /**  Teste para resultado da Lotomania */
+    @Test
+    public void testResultadoLotomania() {
+        List<List<String>> resultadoMegaSena = new Scraper(
+                "http://loterias.caixa.gov.br/wps/portal/loterias/landing/lotomania/",
+                QuantidadeDezenas.LOTOMANIA.getValor(),
+                driver
+        ).pegarResultado();
+        assertNotNull(resultadoMegaSena);
+        for(List<String> dezenas: resultadoMegaSena) {
+            assertTrue( dezenas.toArray().length == QuantidadeDezenas.LOTOMANIA.getValor() );
+        }
     }
 }
